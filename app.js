@@ -5,7 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 const passport = require('passport');
-
+const socketIo = require('socket.io');
+const http = require('http');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -50,5 +51,33 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
+// socket messages start
+  const server = http.createServer(app);
+  const io = socketIo(server);
+
+
+  io.on('connection', (socket)=>{
+    console.log("A user joined the chat");
+
+    socket.on('message', (message)=>{
+      console.log("Received: ", message);
+
+      io.emit('message', message)
+
+    });
+    socket.on('disconnect', ()=>{
+      console.log("User disconnected");
+    })
+
+  });
+
+
+
+
+// socket messages end
+
 
 module.exports = app;

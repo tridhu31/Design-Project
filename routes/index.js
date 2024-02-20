@@ -4,8 +4,11 @@ var session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
+const socketIo = require('socket.io');
+const http = require('http');
 
 
+// authentication routes start
 const users = [];
 // Passport Configuration
 passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
@@ -50,8 +53,6 @@ router.post('/signup', function(req, res){
 
 })
 
-
-
 router.get("/login", function( req, res) {
   res.render('login');
 });
@@ -59,7 +60,17 @@ router.get("/login", function( req, res) {
 router.post('/login', passport.authenticate('local', {
   successRedirect: "/",
   failureRedirect: '/login',
-}));
+})); 
+// authentication routes end
+
+// socket messages start
+
+router.get("/msg", function( req, res) {
+  res.render('socket_message');
+});
+// socket messages end
+
+
 
 
 
