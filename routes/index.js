@@ -6,6 +6,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const socketIo = require('socket.io');
 const http = require('http');
+const message_schema = require("../message")
 
 
 // authentication routes start
